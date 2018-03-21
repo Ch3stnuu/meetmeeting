@@ -7,6 +7,6 @@ public class Request extends Model<Request> {
     public static final Request dao = new Request().dao();
 
     public String getTitle(){
-        return Meeting.dao.findById(get("m_id")).getStr("title");
+        return Meeting.dao.findById(get("mid")).getStr("title");
     }
 }

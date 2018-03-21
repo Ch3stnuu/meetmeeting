@@ -11,7 +11,7 @@ public class Message extends Model<Message> {
 
   //获取发件人姓名
   public String getUserName(){
-    Kv cond = Kv.by("u_id = ",getInt("sender_id"));
+    Kv cond = Kv.by("u_id = ",getInt("senderId"));
     SqlPara sqlPara = Db.getSqlPara("user.find",Kv.by("cond",cond));
     String username =  User.dao.findFirst(sqlPara).get("username");
     return username;
