@@ -13,7 +13,7 @@ public class Meeting extends Model<Meeting> {
 
     //查看每个会议未审核的申请列表
     public List<Request> getListRequest(){
-        Kv cond = Kv.by("m_id = ",get("m_id")).set("status = ",0);
+        Kv cond = Kv.by("m_id = ",get("mid")).set("status = ",0);
         SqlPara sqlPara = Db.getSqlPara("request.findList",Kv.by("cond",cond));
         return Request.dao.find(sqlPara);
     }

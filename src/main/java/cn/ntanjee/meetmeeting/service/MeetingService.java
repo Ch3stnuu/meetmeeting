@@ -162,4 +162,26 @@ public class MeetingService {
         return isDelete;
     }
 
+    //通过会议id,用户id查询该条申请的状态
+    public int getRequestStatus(int mid,int uid){
+        Kv cond = Kv.by("u_id = ",uid).set("m_id = ",mid);
+        SqlPara sqlPara = Db.getSqlPara("request.find",Kv.by("cond",cond));
+        Request request = Request.dao.findFirst(sqlPara);
+        int status = request.getInt("status");
+        return status;
+    }
+
+    //根据会议id,用户id查看用户是否申请过该会议，若申请过返回 true; 反之 false
+    public boolean isReuestedMeeting(int mid,int uid){
+        Kv cond = Kv.by("u_id = ",uid).set("m_id = ",mid);
+        SqlPara sqlPara = Db.getSqlPara("request.find",Kv.by("cond",cond));
+        List<Request> requestList = Request.dao.find(sqlPara);
+        if (requestList.size() > 0){
+            return true;
+        }else {
+            return false;
+        }
+
+    }
+
 }
