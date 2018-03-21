@@ -1,13 +1,13 @@
 package cn.ntanjee.meetmeeting.controller.meeting;
 
-import cn.ntanjee.meetmeeting.domain.Meeting;
+import cn.ntanjee.meetmeeting.model.Meeting;
+import cn.ntanjee.meetmeeting.model.Request;
 import cn.ntanjee.meetmeeting.service.MeetingService;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.core.Controller;
 
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
@@ -19,36 +19,21 @@ public class MeetingController extends Controller {
         String token = getPara("token");
         String label = getPara("label");
 
-        String authorization = "T000";
-        HashMap<String, java.io.Serializable> map = new HashMap<String, java.io.Serializable>();
-        map.put("mid", 2);
-        map.put("title", "安卓研讨会");
-
-        HashMap<String, java.io.Serializable> map1 = new HashMap<String, java.io.Serializable>();
-        map1.put("mid", 2);
-        map1.put("title", "安卓研讨会");
-
-        List<HashMap<String, java.io.Serializable>> list = new LinkedList<HashMap<String, java.io.Serializable>>();
-        list.add(map);
-        list.add(map1);
+        List<Meeting> list = MeetingService.getInstance().getMeetingByLabel(label);
 
         jsonObject.put("meetingList", list);
-        jsonObject.put("authorization", authorization);
+        jsonObject.put("authorization", "T000");
 
         renderJson(jsonObject);
     }
 
+    //未完成
     public void info(){
         String token = getPara("token");
-        String mid = getPara("mid");
+        int mid = getParaToInt("mid");
 
-        ArrayList<String> label = new ArrayList<>();
-        label.add("公司年会");
-        label.add("会议");
-        LocalDate localDate = LocalDate.now();
-        Meeting meeting = new Meeting(1, 1, "震惊！", "balabalabala...", localDate, "北京天安门", 1, 0, label, 0);
-        int isPass = 1;
-        String authorization = "T000";
+        Meeting meeting = MeetingService.getInstance().getMeetingById(mid);
+        List<Request> requestList = MeetingService.getInstance().getMyRequest(1, 1);
 
         renderJson(meeting);
 
@@ -92,21 +77,10 @@ public class MeetingController extends Controller {
     public void list(){
         String token = getPara("token");
 
-        String authorization = "T000";
-        HashMap<String, java.io.Serializable> map = new HashMap<>();
-        map.put("mid", 1);
-        map.put("title", "Java 研讨会");
-
-        HashMap<String, java.io.Serializable> map1 = new HashMap<String, java.io.Serializable>();
-        map1.put("mid", 2);
-        map1.put("title", "安卓研讨会");
-
-        List<HashMap<String, java.io.Serializable>> list = new LinkedList<HashMap<String, java.io.Serializable>>();
-        list.add(map);
-        list.add(map1);
+        List<Meeting> list = MeetingService.getInstance().getMeetingListByUid(1);
 
         jsonObject.put("meetingList", list);
-        jsonObject.put("authorization", authorization);
+        jsonObject.put("authorization", "T000");
 
         renderJson(jsonObject);
     }
@@ -115,25 +89,15 @@ public class MeetingController extends Controller {
         String token = getPara("token");
         String title = getPara("title");
 
-        String authorization = "T000";
-        HashMap<String, java.io.Serializable> map = new HashMap<>();
-        map.put("mid", 1);
-        map.put("title", "Java 研讨会");
-
-        HashMap<String, java.io.Serializable> map1 = new HashMap<String, java.io.Serializable>();
-        map1.put("mid", 2);
-        map1.put("title", "安卓研讨会");
-
-        List<HashMap<String, java.io.Serializable>> list = new LinkedList<HashMap<String, java.io.Serializable>>();
-        list.add(map);
-        list.add(map1);
+        List<Meeting> list = MeetingService.getInstance().getMeetingByTitle(title);
 
         jsonObject.put("meetingList", list);
-        jsonObject.put("authorization", authorization);
+        jsonObject.put("authorization", "T000");
 
         renderJson(jsonObject);
     }
 
+    //未完成
     public void share(){
         String token = getPara("token");
         int mid = getParaToInt("mid");
