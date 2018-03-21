@@ -13,7 +13,7 @@ public class Contact extends Model<Contact> {
     public static final Contact dao = new Contact().dao();
 
     public User getUsers(){
-        Kv cond = Kv.by("u_id",getInt("c_id"));
+        Kv cond = Kv.by("u_id",getInt("cid"));
         SqlPara sqlPara = Db.getSqlPara("user.find",Kv.by("cond",cond));
         return User.dao.findFirst(sqlPara);
     }
