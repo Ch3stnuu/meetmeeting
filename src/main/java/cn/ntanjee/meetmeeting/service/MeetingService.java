@@ -36,7 +36,7 @@ public class MeetingService {
             }
         }
         Meeting meeting = new Meeting().set("title",title).set("content",content).set("date",date).
-                            set("site",site).set("u_id",uid).set("label",label).set("restrict",restrict).set("status",0).set("isPublic",isPublic);
+                            set("site",site).set("u_id",uid).set("label",label).set("res",restrict).set("status",0).set("isPublic",isPublic);
         meeting.save();
         int mid = meeting.getInt("m_id");
         LOGGER.info("向 meeting 表中新增 title: "+title+" date: "+date+" site: "+site+" 记录");
