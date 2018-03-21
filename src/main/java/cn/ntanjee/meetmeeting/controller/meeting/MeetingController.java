@@ -1,11 +1,15 @@
 package cn.ntanjee.meetmeeting.controller.meeting;
 
 import cn.ntanjee.meetmeeting.domain.Meeting;
+import cn.ntanjee.meetmeeting.service.MeetingService;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.core.Controller;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 
 public class MeetingController extends Controller {
@@ -56,13 +60,25 @@ public class MeetingController extends Controller {
         Date date = getParaToDate("date");
         String site = getPara("site");
         String label = getPara("label");
-        String restrict = getPara("restrict");
+        int res = getParaToInt("restrict");
+        int isPublic = getParaToInt("isPublic");
         List<String> arrayLists = JSON.parseArray(label, String.class);
         String authorization = "T000";
 
-        Boolean insert = false;
+        Instant instant = date.toInstant();
+        ZoneId zoneId = ZoneId.systemDefault();
+        LocalDateTime localDate = LocalDateTime.ofInstant(instant, zoneId);
 
-        if(insert){
+        String[] labelArray = new String[arrayLists.size()];
+        for(int i = 0; i < arrayLists.size(); i++){
+            labelArray[i] = arrayLists.get(i);
+        }
+
+        int insert = -1;
+        insert = MeetingService.getInstance().createMeeting(1, title, content, localDate,
+                site, labelArray, res, isPublic);
+
+        if(insert >= 0){
             jsonObject.put("mid", "2");
             jsonObject.put("code", "R001");
             jsonObject.put("authorization", authorization);
