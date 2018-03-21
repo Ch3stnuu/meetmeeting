@@ -2,6 +2,8 @@ package cn.ntanjee.meetmeeting.controller.meeting;
 
 import cn.ntanjee.meetmeeting.domain.Meeting;
 import cn.ntanjee.meetmeeting.domain.MeetingRequest;
+import cn.ntanjee.meetmeeting.model.Request;
+import cn.ntanjee.meetmeeting.service.MeetingService;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.core.Controller;
 
@@ -32,10 +34,14 @@ public class MeetingRequestController extends Controller{
         String phone = getPara("phone");
         String remark = getPara("remark");
 
-        String authorization = "T000";
+        int i = -1;
+        i = MeetingService.getInstance().createRequest(1, mid, name, phone, remark);
 
-        jsonObject.put("mid", mid);
-        jsonObject.put("authorization", authorization);
+        if (i < 0){
+            jsonObject.put("authorization", "T001");
+        } else {
+            jsonObject.put("mid", mid);
+        }
 
         renderJson(jsonObject);
     }
@@ -43,22 +49,9 @@ public class MeetingRequestController extends Controller{
     public void list(){
         String token = getPara("token");
 
-        String authorization = "T000";
-        HashMap<Object, Object> map = new HashMap();
-        map.put("r_id", 1);
-        map.put("name", "大黄");
+        List<Request> requestList = MeetingService.getInstance().getRequestByUid(1);
 
-        HashMap<Object, Object> map2 = new HashMap();
-        map2.put("r_id", 2);
-        map2.put("name", "君君");
-
-        List<Object> list = new LinkedList();
-        list.add(map);
-        list.add(map2);
-
-
-        jsonObject.put("requestList", list);
-        jsonObject.put("authorization", authorization);
+        jsonObject.put("requestList", requestList);
 
         renderJson(jsonObject);
     }
