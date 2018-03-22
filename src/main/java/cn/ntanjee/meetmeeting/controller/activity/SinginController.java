@@ -1,5 +1,7 @@
 package cn.ntanjee.meetmeeting.controller.activity;
 
+import cn.ntanjee.meetmeeting.model.User;
+import cn.ntanjee.meetmeeting.service.SigninService;
 import cn.ntanjee.meetmeeting.vo.TestObject;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.core.Controller;
@@ -14,14 +16,16 @@ public class SinginController extends Controller{
         String token = getPara("token");
         int gid = getParaToInt("gid");
 
-        Boolean b = false;
+        Boolean b = SigninService.getInstance().sign(gid, 1);
 
         if (b){
             jsonObject.put("isSuccess", 1);
             jsonObject.put("isDone", 0);
+            jsonObject.put("authorization", "T000");
         }else {
             jsonObject.put("isSuccess", 0);
             jsonObject.put("isDone", 1);
+            jsonObject.put("authorization", "T001");
         }
 
         renderJson(jsonObject);
@@ -31,19 +35,18 @@ public class SinginController extends Controller{
         String token = getPara("token");
         int gid = getParaToInt("gid");
 
-        renderNull();
+        int g = SigninService.getInstance().createSignin(gid);
+
+        jsonObject.put("gid", g);
+
+        renderJson(jsonObject);
     }
 
     public void absence(){
         String token = getPara("token");
         int gid = getParaToInt("gid");
 
-        TestObject t1 = new TestObject(1, "大黄");
-        TestObject t2 = new TestObject(2, "小黄");
-
-        List<TestObject> list = new LinkedList<>();
-        list.add(t1);
-        list.add(t2);
+        List<User> list = SigninService.getInstance().getAbsence(gid);
 
         jsonObject.put("absenceList", list);
 
