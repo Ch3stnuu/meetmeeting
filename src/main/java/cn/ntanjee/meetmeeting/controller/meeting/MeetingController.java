@@ -27,7 +27,6 @@ public class MeetingController extends Controller {
         renderJson(jsonObject);
     }
 
-    //未完成
     public void info(){
         String token = getPara("token");
         int mid = getParaToInt("mid");
@@ -112,7 +111,7 @@ public class MeetingController extends Controller {
         renderJson(jsonObject);
     }
 
-    //未完成
+    //未完成，未获取分享连接
     public void share(){
         String token = getPara("token");
         int mid = getParaToInt("mid");

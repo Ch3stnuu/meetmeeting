@@ -1,9 +1,17 @@
 package cn.ntanjee.meetmeeting.controller.activity;
 
+import cn.ntanjee.meetmeeting.model.User;
+import cn.ntanjee.meetmeeting.model.Vote;
+import cn.ntanjee.meetmeeting.service.UserService;
+import cn.ntanjee.meetmeeting.service.VoteService;
+import cn.ntanjee.meetmeeting.vo.VoteInfo;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.core.Controller;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,16 +33,23 @@ public class VoteController extends Controller {
         String token = getPara("token");
         int vid = getParaToInt("vid");
 
-        List<String> item = new LinkedList<>();
-        item.add("是");
-        item.add("一定是");
-        item.add("肯定是");
+        Vote vote = VoteService.getInstance().getByVid(vid);
+        User user = UserService.getInstance().getByUid(1);
 
-        jsonObject.put("vname", "aa");
-        jsonObject.put("item", item);
-        jsonObject.put("isOver", 0);
+        String vitem = vote.get("item");
+        String[] item = vitem.split(" ");
+        Timestamp timestamp = vote.get("deadline");
+        LocalDateTime deadline = timestamp.toLocalDateTime();
 
-        renderJson(jsonObject);
+        int isOver = 0;
+
+        if (deadline.isBefore(LocalDateTime.now())) {
+            isOver = 1;
+        }
+
+        VoteInfo voteInfo = new VoteInfo(user.get("username"), item, isOver, "T000");
+
+        renderJson(voteInfo);
 
     }
 
@@ -46,8 +61,15 @@ public class VoteController extends Controller {
         String item = getPara("item");
         List<String> aitem = JSON.parseArray(item, String.class);
 
-        jsonObject.put("vid", 1);
-        jsonObject.put("gid", 3);
+        String[] items = new String[aitem.size()];
+        for (int i = 0; i < items.length; i++){
+            items[i] = aitem.get(i);
+        }
+
+        int vid = VoteService.getInstance().createVote(gid, vname, minute, items);
+
+        jsonObject.put("vid", vid);
+        jsonObject.put("gid", gid);
 
         renderJson(jsonObject);
     }
