@@ -1,8 +1,8 @@
 package cn.ntanjee.meetmeeting.controller.meeting;
 
 import cn.ntanjee.meetmeeting.model.Meeting;
-import cn.ntanjee.meetmeeting.model.Request;
 import cn.ntanjee.meetmeeting.service.MeetingService;
+import cn.ntanjee.meetmeeting.vo.MeInfo;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.core.Controller;
@@ -31,11 +31,26 @@ public class MeetingController extends Controller {
     public void info(){
         String token = getPara("token");
         int mid = getParaToInt("mid");
+        int isPass = 0;
 
         Meeting meeting = MeetingService.getInstance().getMeetingById(mid);
-        List<Request> requestList = MeetingService.getInstance().getMyRequest(1, 1);
+        Boolean b = MeetingService.getInstance().isReuestedMeeting(mid, 1);
 
-        renderJson(meeting);
+        if (b) {
+            int status = MeetingService.getInstance().getRequestStatus(mid, 1);
+            if (status == 1){
+                isPass = 1;
+            }
+        } else {
+            if (meeting.get("res").equals(0)){
+                isPass = 1;
+            }
+        }
+
+        MeInfo meInfo = new MeInfo(meeting.get("title"), meeting.get("content"), meeting.get("mid"),
+                meeting.get("date").toString(), meeting.get("site"), isPass);
+
+        renderJson(meInfo);
 
     }
 

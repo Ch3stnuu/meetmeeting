@@ -1,16 +1,15 @@
 package cn.ntanjee.meetmeeting.vo;
 
-import java.time.LocalDate;
 
 public class MeInfo {
     private String title;
     private String content;
     private int mid;
-    private LocalDate date;
+    private String date;
     private String site;
     private int isPass;
 
-    public MeInfo(String title, String content, int mid, LocalDate date, String site, int isPass) {
+    public MeInfo(String title, String content, int mid, String date, String site, int isPass) {
         this.title = title;
         this.content = content;
         this.mid = mid;
@@ -46,11 +45,11 @@ public class MeInfo {
         this.mid = mid;
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
