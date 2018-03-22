@@ -11,10 +11,7 @@ import com.jfinal.core.Controller;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class VoteController extends Controller {
     private JSONObject jsonObject = new JSONObject();
@@ -79,7 +76,13 @@ public class VoteController extends Controller {
         int vid = getParaToInt("vid");
         String item = getPara("item");
 
-        jsonObject.put("isPass", 0);
+        Boolean b = VoteService.getInstance().createVotingReslt(vid, item, 1);
+
+        if (b) {
+            jsonObject.put("isPass", 1);
+        } else {
+            jsonObject.put("isPass", 0);
+        }
 
         renderJson(jsonObject);
     }
@@ -88,11 +91,7 @@ public class VoteController extends Controller {
         String token = getPara("token");
         int vid = getParaToInt("vid");
 
-        HashMap map = new HashMap();
-        map.put("选项一", 12);
-        map.put("选项二", 13);
-        map.put("选项三", 14);
-
+        Map<String, Integer> map = VoteService.getInstance().getVoteResult(vid);
         jsonObject.put("result", map);
 
         renderJson(jsonObject);
