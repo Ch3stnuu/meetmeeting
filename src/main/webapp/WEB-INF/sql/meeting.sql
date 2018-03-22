@@ -1,5 +1,5 @@
 #sql("find")
-      SELECT m_id mid, title, date, site, res, conent FROM meeting
+      SELECT m_id mid, title, date, site, res, content FROM meeting
         #for(x:cond)
            #(for.index == 0 ? "where": "and") #(x.key) #para(x.value)
         #end
