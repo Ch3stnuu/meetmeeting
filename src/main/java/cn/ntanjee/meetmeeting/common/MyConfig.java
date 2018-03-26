@@ -25,6 +25,8 @@ public class MyConfig extends JFinalConfig {
         constants.setUrlParaSeparator("&");
         PropKit.use("config.properties");
         constants.setDevMode(true);
+        constants.setBaseUploadPath("image");
+
     }
 
     public void configRoute(Routes routes) {

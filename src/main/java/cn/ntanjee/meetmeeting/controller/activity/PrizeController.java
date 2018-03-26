@@ -1,5 +1,7 @@
 package cn.ntanjee.meetmeeting.controller.activity;
 
+import cn.ntanjee.meetmeeting.model.User;
+import cn.ntanjee.meetmeeting.service.SigninService;
 import cn.ntanjee.meetmeeting.vo.TestObject;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.core.Controller;
@@ -10,16 +12,13 @@ import java.util.List;
 public class PrizeController extends Controller {
     private JSONObject jsonObject = new JSONObject();
 
+    //待定，缺少请求参数gid
     public void index(){
         String token = getPara("token");
         int number = getParaToInt("number");
+        int gid = getParaToInt("gid");
 
-        TestObject t1 = new TestObject(1, "大黄");
-        TestObject t2 = new TestObject(2, "小黄");
-
-        List<TestObject> list = new LinkedList<>();
-        list.add(t1);
-        list.add(t2);
+        List<User> list = SigninService.getInstance().getRandomUser(gid, number);
 
         jsonObject.put("prizeList", list);
 
