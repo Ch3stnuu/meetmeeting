@@ -4,7 +4,7 @@ import cn.ntanjee.meetmeeting.model.Contact;
 import cn.ntanjee.meetmeeting.model.User;
 import cn.ntanjee.meetmeeting.service.ContactService;
 import cn.ntanjee.meetmeeting.service.UserService;
-import cn.ntanjee.meetmeeting.vo.TestObject;
+import cn.ntanjee.meetmeeting.vo.ConInfo;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.core.Controller;
 
@@ -14,14 +14,20 @@ import java.util.List;
 public class ContactController extends Controller{
     private JSONObject jsonObject = new JSONObject();
 
-    //bug
     public void index(){
         String token = getPara("token");
 
         int uid = 1;
         List<Contact> list = ContactService.getInstance().getContactList(uid);
+        List<cn.ntanjee.meetmeeting.vo.Contact> contactList = new LinkedList<>();
 
-        jsonObject.put("contactList", list);
+        for (Contact contact:
+             list) {
+            contactList.add(new cn.ntanjee.meetmeeting.vo.Contact(contact.get("cid"),
+                    UserService.getInstance().getByUid(uid).get("username")));
+        }
+
+        jsonObject.put("contactList", contactList);
         jsonObject.put("authorization", "T000");
 
         renderJson(jsonObject);
@@ -43,13 +49,10 @@ public class ContactController extends Controller{
         String token = getPara("token");
         int cid = getParaToInt("cid");
 
-        Boolean b = true;
+        int uid = 5;
+        ContactService.getInstance().createContact(uid, cid, 0);
 
-        if (b) {
-            jsonObject.put("authorization", "T000");
-        } else {
-            jsonObject.put("authorization", "T001");
-        }
+        jsonObject.put("authorization", "T000");
 
         renderJson(jsonObject);
     }
@@ -58,6 +61,10 @@ public class ContactController extends Controller{
         String token = getPara("token");
         int cid = getParaToInt("cid");
         int admit = getParaToInt("admit");
+
+        int uid = 1;
+        ContactService.getInstance().updateContact(cid, uid);
+        ContactService.getInstance().createContact(uid, cid, 1);
 
         jsonObject.put("authorization", "T000");
 
@@ -68,11 +75,19 @@ public class ContactController extends Controller{
         String token = getPara("token");
         int cid = getParaToInt("cid");
 
-        TestObject o = new TestObject(1, "小明");
+        int uid = 1;
+        User user = UserService.getInstance().getByUid(cid);
+        Boolean b = ContactService.getInstance().isFriend(uid, cid);
+        int isFriend;
 
-        jsonObject.put("", o);
-        jsonObject.put("authorization", "T000");
+        if (b) {
+            isFriend = 1;
+        } else {
+            isFriend = 0;
+        }
 
-        renderJson(jsonObject);
+        ConInfo conInfo = new ConInfo(cid, user.get("username"), isFriend, "T000");
+
+        renderJson(conInfo);
     }
 }

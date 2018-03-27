@@ -1,17 +1,17 @@
 package cn.ntanjee.meetmeeting.vo;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class MessInfo {
     private String message;
     private int senderId;
-    private LocalDate date;
+    private String timeStr;
     private int isRequest;
 
-    public MessInfo(String message, int senderId, LocalDate date, int isRequest) {
+    public MessInfo(String message, int senderId, String timeStr, int isRequest) {
         this.message = message;
         this.senderId = senderId;
-        this.date = date;
+        this.timeStr = timeStr;
         this.isRequest = isRequest;
     }
 
@@ -34,12 +34,12 @@ public class MessInfo {
         this.senderId = senderId;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public String getTimeStr() {
+        return timeStr;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setTimeStr(String timeStr) {
+        this.timeStr = timeStr;
     }
 
     public int getIsRequest() {
@@ -55,7 +55,7 @@ public class MessInfo {
         return "MessInfo{" +
                 "message='" + message + '\'' +
                 ", senderId=" + senderId +
-                ", date=" + date +
+                ", timeStr='" + timeStr + '\'' +
                 ", isRequest=" + isRequest +
                 '}';
     }

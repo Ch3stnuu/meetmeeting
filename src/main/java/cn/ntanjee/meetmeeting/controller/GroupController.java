@@ -16,7 +16,6 @@ import java.util.List;
 
 public class GroupController extends Controller {
 
-    //bug
     public void list(){
         String token = getPara("token");
 

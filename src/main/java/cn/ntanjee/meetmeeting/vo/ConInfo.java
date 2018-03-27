@@ -4,11 +4,13 @@ public class ConInfo {
     private int cid;
     private String username;
     private int isFriend;
+    private String authorization;
 
-    public ConInfo(int cid, String username, int isFriend) {
+    public ConInfo(int cid, String username, int isFriend, String authorization) {
         this.cid = cid;
         this.username = username;
         this.isFriend = isFriend;
+        this.authorization = authorization;
     }
 
     public ConInfo() {
@@ -38,12 +40,21 @@ public class ConInfo {
         this.isFriend = isFriend;
     }
 
+    public String getAuthorization() {
+        return authorization;
+    }
+
+    public void setAuthorization(String authorization) {
+        this.authorization = authorization;
+    }
+
     @Override
     public String toString() {
         return "ConInfo{" +
                 "cid=" + cid +
                 ", username='" + username + '\'' +
                 ", isFriend=" + isFriend +
+                ", authorization='" + authorization + '\'' +
                 '}';
     }
 }

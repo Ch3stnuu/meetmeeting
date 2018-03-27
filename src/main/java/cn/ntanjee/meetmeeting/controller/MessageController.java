@@ -1,9 +1,14 @@
 package cn.ntanjee.meetmeeting.controller;
 
+import cn.ntanjee.meetmeeting.model.Message;
+import cn.ntanjee.meetmeeting.service.MessageService;
+import cn.ntanjee.meetmeeting.vo.MessInfo;
 import cn.ntanjee.meetmeeting.vo.TestObject;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.core.Controller;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,19 +18,10 @@ public class MessageController extends Controller {
     public void list(){
         String token = getPara("token");
 
-        Boolean b = true;
-        TestObject o = new TestObject(1, "小明");
-        TestObject o2 = new TestObject(2, "小红");
+        int uid = 2;
+        List<Message> list = MessageService.getInstance().getListByUid(uid);
 
-        List<TestObject> list = new LinkedList<>();
-        list.add(o);
-        list.add(o2);
-
-        if (b) {
-            jsonObject.put("msgList", list);
-        } else {
-            jsonObject.put("authorization", "T000");
-        }
+        jsonObject.put("msgList", list);
 
         renderJson(jsonObject);
     }
@@ -35,9 +31,21 @@ public class MessageController extends Controller {
         int msgId = getParaToInt("msgId");
         int type = getParaToInt("type");
 
-        TestObject o = new TestObject(1, "小明");
+        Message message = MessageService.getInstance().getByMsgId(msgId);
+        int isRequest;
+        if (type == 3) {
+            isRequest = 1;
+        } else {
+            isRequest = 0;
+        }
 
-        renderJson(o);
+        Timestamp timestamp = message.get("send_date_time");
+        String timeStr = timestamp.toLocalDateTime().toString();
+
+        MessInfo messInfo = new MessInfo(message.get("message"), message.get("sender_id"),
+                timeStr, isRequest);
+
+        renderJson(messInfo);
     }
 
 }
