@@ -65,6 +65,7 @@ public class UserController extends Controller {
         }
     }
 
+    //未完成 无短信发送业务
     public void pwdG(){
         String phone = getPara("phone");
 
@@ -89,17 +90,16 @@ public class UserController extends Controller {
         renderJson(jsonObject);
     }
 
-    //Bug
     public void npwd() {
         String account = getPara("account");
         String password = getPara("password");
-        String  repassword = getPara("repassword");
 
-        if (password.equals(repassword)){
-            UserService.getInstance().updatePwd(1, password);
+        int uid = 1;
+
+        Boolean b = UserService.getInstance().updatePwd(uid, password);
+        if (b) {
             jsonObject.put("authorization", "T001");
-        } else {
-            jsonObject.put("code", "U001");
+            jsonObject.put("code", "U000");
         }
 
         renderJson(jsonObject);
@@ -109,15 +109,18 @@ public class UserController extends Controller {
         String token = getPara("token");
         String opassword = getPara("opassword");
         String npassword = getPara("npassword");
-        String repassword = getPara("repassword");
 
-        Boolean b = true;
-
-        if (b) {
-            jsonObject.put("code", "CP00");
-            jsonObject.put("authorization", "T001");
+        int uid = 1;
+        Boolean isRight = UserService.getInstance().isPwdRight(uid, opassword);
+        if (isRight) {
+            Boolean b = UserService.getInstance().updatePwd(uid, npassword);
+            if (b) {
+                jsonObject.put("code", "CP00");
+            } else {
+                jsonObject.put("code", "CP01");
+            }
         } else {
-            jsonObject.put("code", "CP01");
+            jsonObject.put("code", "OP01");
         }
 
         renderJson(jsonObject);
