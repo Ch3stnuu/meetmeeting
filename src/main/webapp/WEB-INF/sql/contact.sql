@@ -1,5 +1,5 @@
 #sql("find")
-      SELECT u_id uid,c_id cid status FROM contact
+      SELECT u_id uid,c_id cid,status FROM contact
         #for(x:cond)
            #(for.index == 0 ? "where": "and") #(x.key) #para(x.value)
         #end
