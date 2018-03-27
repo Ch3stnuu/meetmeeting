@@ -34,7 +34,7 @@ public class GroupService {
         List<Group> allGroup = Group.dao.find(sqlPara);
         //遍历全部群组列表
         for (Group group:allGroup){
-            String confereeStr = group.get("conferee");
+            String confereeStr = group.getStr("conferee");
             //使用正则表达式
             Pattern pattern = Pattern.compile("\\b"+conferee+"\\b");
             Matcher matcher = pattern.matcher(confereeStr);
