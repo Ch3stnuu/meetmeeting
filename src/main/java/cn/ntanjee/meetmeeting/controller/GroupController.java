@@ -1,5 +1,10 @@
 package cn.ntanjee.meetmeeting.controller;
 
+import cn.ntanjee.meetmeeting.model.Group;
+import cn.ntanjee.meetmeeting.model.User;
+import cn.ntanjee.meetmeeting.service.GroupService;
+import cn.ntanjee.meetmeeting.service.UserService;
+import cn.ntanjee.meetmeeting.vo.GroupInfo;
 import cn.ntanjee.meetmeeting.vo.TestObject;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.core.Controller;
@@ -8,18 +13,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class GroupController extends Controller {
-    private JSONObject jsonObject = new JSONObject();
 
     public void list(){
         String token = getPara("token");
 
-        TestObject o = new TestObject(1, "小明");
-        TestObject o2 = new TestObject(2, "小红");
+        int uid = 1;
 
-        List<TestObject> list = new LinkedList<>();
-        list.add(o);
-        list.add(o2);
+        List<Group> list = GroupService.getInstance().getListByConferee(uid);
 
+        JSONObject jsonObject = new JSONObject();
         jsonObject.put("groupList", list);
         jsonObject.put("authorization", "T000");
 
@@ -28,21 +30,27 @@ public class GroupController extends Controller {
 
     public void info(){
         String token = getPara("token");
-        String gid = getPara("gid");
+        int gid = getParaToInt("gid");
 
-        TestObject o = new TestObject(1, "小明");
-        TestObject o2 = new TestObject(2, "小红");
-        TestObject o3 = new TestObject(2, "小小");
+        int uid = 1;
+        Group group = GroupService.getInstance().getGroupById(gid);
 
-        List<TestObject> list = new LinkedList<>();
-        list.add(o);
-        list.add(o2);
+        int isAdmin = 0;
+        if (group.get("admin").equals(uid)) {
+            isAdmin = 1;
+        }
 
-        jsonObject.put("mid", gid);
-        jsonObject.put("admin", o3);
-        jsonObject.put("conferee", list);
-        jsonObject.put("authorization", "T000");
+        User admin = UserService.getInstance().getByUid(group.get("admin"));
 
-        renderJson(jsonObject);
+        int[] confereeUids = GroupService.getInstance().getConfereeUid(gid);
+        List<User> list = new LinkedList<>();
+        for (int i:
+             confereeUids) {
+            list.add(UserService.getInstance().getByUid(i));
+        }
+
+        GroupInfo groupInfo = new GroupInfo(group.get("mid"), admin, list, isAdmin, "T000");
+
+        renderJson(groupInfo);
     }
 }
