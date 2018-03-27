@@ -58,7 +58,8 @@ public class UserService {
 
     //修改信息
     public boolean editUser(int id,String username,String iconUrl){
-        boolean isUpdate = getByUid(id).set("username",username).set("icon",iconUrl).update();
+        User user = User.dao.findById(id);
+        boolean isUpdate = user.set("username",username).set("icon",iconUrl).update();
         if (isUpdate){
             LOGGER.info("修改 user 表中 u_id 为"+id+"的信息成功");
         }else {
@@ -78,7 +79,8 @@ public class UserService {
     }
     //修改密码
     public boolean updatePwd(int id,String password){
-        boolean isUpdate =  getByUid(id).set("password",password).update();
+        User user = User.dao.findByIdLoadColumns(id,"u_id,password");
+        boolean isUpdate =  user.set("password",password).update();
         if (isUpdate){
             LOGGER.info("用户u_id为"+id+"修改密码为"+password +"成功");
         }else {
@@ -94,7 +96,4 @@ public class UserService {
         List<User> userList = User.dao.find(sqlPara);
         return userList;
     }
-
-
-
 }

@@ -7,6 +7,7 @@ import cn.ntanjee.meetmeeting.util.UpdateSchedulerListener;
 import com.jfinal.kit.Kv;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.SqlPara;
+import com.sun.org.apache.regexp.internal.RE;
 import it.sauronsoftware.cron4j.Scheduler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -89,7 +90,7 @@ public class MeetingService {
     //根据r_id查找request记录
     public Request getRequestByRid(int rid){
         Kv cond = Kv.by("r_id = ",rid);
-        SqlPara sqlPara = Db.getSqlPara("request.find",Kv.by("cond",cond));
+        SqlPara sqlPara = Db.getSqlPara("request.findByRid",Kv.by("cond",cond));
         return Request.dao.findFirst(sqlPara);
     }
 
@@ -107,14 +108,15 @@ public class MeetingService {
 
     //修改审核状态
     public void reviewRequest(int rid,int isPass){
-        getRequestByRid(rid).set("status",isPass).update();
+        Request request = Request.dao.findById(rid,"r_id");
+        request.set("status",isPass).update();
         LOGGER.info("更新 request 表中r_id: "+rid+" 记录的 status: "+isPass);
     }
 
     //根据审核状态查看个人申请列表 (查询字段 r_id,m_id,name)
     public List<Request> getMyRequest(int uid,int status){
         Kv cond = Kv.by("u_id = ",uid).set("status = ",status);
-        SqlPara sqlPara = Db.getSqlPara("request.find",Kv.by("cond",cond));
+        SqlPara sqlPara = Db.getSqlPara("request.findListByUidAndStatus",Kv.by("cond",cond));
         List<Request> requestList = Request.dao.find(sqlPara);
         return requestList;
     }
