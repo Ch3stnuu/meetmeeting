@@ -3,7 +3,9 @@ package cn.ntanjee.meetmeeting.controller;
 import cn.ntanjee.meetmeeting.model.Group;
 import cn.ntanjee.meetmeeting.model.User;
 import cn.ntanjee.meetmeeting.service.GroupService;
+import cn.ntanjee.meetmeeting.service.MeetingService;
 import cn.ntanjee.meetmeeting.service.UserService;
+import cn.ntanjee.meetmeeting.vo.GouList;
 import cn.ntanjee.meetmeeting.vo.GroupInfo;
 import cn.ntanjee.meetmeeting.vo.TestObject;
 import com.alibaba.fastjson.JSONObject;
@@ -14,15 +16,21 @@ import java.util.List;
 
 public class GroupController extends Controller {
 
+    //bug
     public void list(){
         String token = getPara("token");
 
         int uid = 1;
 
         List<Group> list = GroupService.getInstance().getListByConferee(uid);
+        List<GouList> glist = new LinkedList<>();
+        for (Group g:
+             list) {
+            glist.add(new GouList(g.get("gid"), g.getTitle()));
+        }
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("groupList", list);
+        jsonObject.put("groupList", glist);
         jsonObject.put("authorization", "T000");
 
         renderJson(jsonObject);
@@ -33,6 +41,7 @@ public class GroupController extends Controller {
         int gid = getParaToInt("gid");
 
         int uid = 1;
+
         Group group = GroupService.getInstance().getGroupById(gid);
 
         int isAdmin = 0;
@@ -49,7 +58,7 @@ public class GroupController extends Controller {
             list.add(UserService.getInstance().getByUid(i));
         }
 
-        GroupInfo groupInfo = new GroupInfo(group.get("mid"), admin, list, isAdmin, "T000");
+        GroupInfo groupInfo = new GroupInfo(group.get("m_id"), admin, list, isAdmin, "T000");
 
         renderJson(groupInfo);
     }

@@ -1,5 +1,9 @@
 package cn.ntanjee.meetmeeting.controller;
 
+import cn.ntanjee.meetmeeting.model.Contact;
+import cn.ntanjee.meetmeeting.model.User;
+import cn.ntanjee.meetmeeting.service.ContactService;
+import cn.ntanjee.meetmeeting.service.UserService;
 import cn.ntanjee.meetmeeting.vo.TestObject;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.core.Controller;
@@ -10,15 +14,12 @@ import java.util.List;
 public class ContactController extends Controller{
     private JSONObject jsonObject = new JSONObject();
 
+    //bug
     public void index(){
         String token = getPara("token");
 
-        TestObject o = new TestObject(1, "小明");
-        TestObject o2 = new TestObject(2, "小红");
-
-        List<TestObject> list = new LinkedList<>();
-        list.add(o);
-        list.add(o2);
+        int uid = 1;
+        List<Contact> list = ContactService.getInstance().getContactList(uid);
 
         jsonObject.put("contactList", list);
         jsonObject.put("authorization", "T000");
@@ -30,20 +31,10 @@ public class ContactController extends Controller{
         String token = getPara("token");
         String username = getPara("username");
 
-        Boolean b = true;
-        TestObject o = new TestObject(1, "小明");
-        TestObject o2 = new TestObject(2, "小红");
+        List<User> list = UserService.getInstance().getByNameOrAcc(username);
 
-        List<TestObject> list = new LinkedList<>();
-        list.add(o);
-        list.add(o2);
-
-        if (b) {
-            jsonObject.put("contactList", list);
-            jsonObject.put("authorization", "T000");
-        } else {
-            jsonObject.put("authorization", "T001");
-        }
+        jsonObject.put("contactList", list);
+        jsonObject.put("authorization", "T000");
 
         renderJson(jsonObject);
     }

@@ -1,16 +1,10 @@
 package cn.ntanjee.meetmeeting.controller.meeting;
 
-import cn.ntanjee.meetmeeting.domain.Meeting;
-import cn.ntanjee.meetmeeting.domain.MeetingRequest;
 import cn.ntanjee.meetmeeting.model.Request;
 import cn.ntanjee.meetmeeting.service.MeetingService;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.core.Controller;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 public class MeetingRequestController extends Controller{
