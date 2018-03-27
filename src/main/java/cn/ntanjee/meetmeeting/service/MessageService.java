@@ -23,7 +23,7 @@ public class MessageService {
     //增加记录
     public void createMessage(int receiverId, int senderId, int type, String message, LocalDateTime sendDate){
         new Message().set("receiver_id",receiverId).set("sender_id",senderId).set("type",type).
-                      set("message",message).set("send_date_time",sendDate).set("read",0).save();
+                      set("message",message).set("send_date_time",sendDate).set("readed",0).save();
     }
 
     //删除
@@ -53,11 +53,11 @@ public class MessageService {
 
     //更新是否已读
     public boolean updateMessage(int msgId){
-        boolean isUpdate = getByMsgId(msgId).set("read",1).update();
+        boolean isUpdate = getByMsgId(msgId).set("readed",1).update();
         if (isUpdate){
-            LOGGER.info("从message表中修改 msgId:"+msgId+"的一条记录 read: 1 成功");
+            LOGGER.info("从message表中修改 msgId:"+msgId+"的一条记录 readed: 1 成功");
         }else {
-            LOGGER.info("从message表中修改 msgId:"+msgId+"的一条记录 read: 1 失败");
+            LOGGER.info("从message表中修改 msgId:"+msgId+"的一条记录 readed: 1 失败");
         }
         return isUpdate;
     }
