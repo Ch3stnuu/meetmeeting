@@ -10,7 +10,7 @@ import java.util.List;
 public class MeetingRequestController extends Controller{
     private JSONObject jsonObject = new JSONObject();
 
-    //未完成 Bug（25）
+    //未完成 Bug IllegalArgumentException
     public void index(){
         int rid = getParaToInt("rid");
         int auth = getParaToInt("auth");
@@ -31,7 +31,7 @@ public class MeetingRequestController extends Controller{
         String remark = getPara("remark");
 
         int i = -1;
-        i = MeetingService.getInstance().createRequest(1, mid, name, phone, remark);
+        i = MeetingService.getInstance().createRequest(2, mid, name, phone, remark);
 
         if (i < 0){
             jsonObject.put("authorization", "T001");

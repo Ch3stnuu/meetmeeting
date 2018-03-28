@@ -27,7 +27,7 @@ public class MeetingController extends Controller {
         renderJson(jsonObject);
     }
 
-    //bug
+    //bug 空指针
     public void info(){
         String token = getPara("token");
         int mid = getParaToInt("mid");
