@@ -108,7 +108,7 @@ public class MeetingService {
 
     //修改审核状态
     public void reviewRequest(int rid,int isPass){
-        Request request = Request.dao.findById(rid,"r_id");
+        Request request = Request.dao.findById(rid);
         request.set("status",isPass).update();
         LOGGER.info("更新 request 表中r_id: "+rid+" 记录的 status: "+isPass);
     }
@@ -167,7 +167,7 @@ public class MeetingService {
     //通过会议id,用户id查询该条申请的状态
     public int getRequestStatus(int mid,int uid){
         Kv cond = Kv.by("u_id = ",uid).set("m_id = ",mid);
-        SqlPara sqlPara = Db.getSqlPara("request.find",Kv.by("cond",cond));
+        SqlPara sqlPara = Db.getSqlPara("request.findListByUidAndStatus",Kv.by("cond",cond));
         Request request = Request.dao.findFirst(sqlPara);
         int status = request.getInt("status");
         return status;
