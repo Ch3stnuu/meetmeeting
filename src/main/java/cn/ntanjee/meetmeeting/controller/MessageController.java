@@ -3,18 +3,16 @@ package cn.ntanjee.meetmeeting.controller;
 import cn.ntanjee.meetmeeting.model.Message;
 import cn.ntanjee.meetmeeting.service.MessageService;
 import cn.ntanjee.meetmeeting.vo.MessInfo;
-import cn.ntanjee.meetmeeting.vo.TestObject;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.core.Controller;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.LinkedList;
 import java.util.List;
 
 public class MessageController extends Controller {
     private JSONObject jsonObject = new JSONObject();
 
+    //bug
     public void list(){
         String token = getPara("token");
 

@@ -27,6 +27,7 @@ public class MeetingController extends Controller {
         renderJson(jsonObject);
     }
 
+    //bug
     public void info(){
         String token = getPara("token");
         int mid = getParaToInt("mid");
@@ -62,7 +63,6 @@ public class MeetingController extends Controller {
         int res = getParaToInt("restrict");
         int isPublic = getParaToInt("isPublic");
         List<String> arrayLists = JSON.parseArray(label, String.class);
-        String authorization = "T000";
 
         Instant instant = date.toInstant();
         ZoneId zoneId = ZoneId.systemDefault();
@@ -73,14 +73,14 @@ public class MeetingController extends Controller {
             labelArray[i] = arrayLists.get(i);
         }
 
-        int insert = -1;
-        insert = MeetingService.getInstance().createMeeting(1, title, content, localDate,
+        int mid = -1;
+         mid = MeetingService.getInstance().createMeeting(1, title, content, localDate,
                 site, labelArray, res, isPublic);
 
-        if(insert >= 0){
-            jsonObject.put("mid", "2");
+        if(mid >= 0){
+            jsonObject.put("mid", mid);
             jsonObject.put("code", "R001");
-            jsonObject.put("authorization", authorization);
+            jsonObject.put("authorization", "T000");
         }else {
             jsonObject.put("code","R000");
         }
