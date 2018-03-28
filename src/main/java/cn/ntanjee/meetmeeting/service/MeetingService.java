@@ -176,7 +176,7 @@ public class MeetingService {
     //根据会议id,用户id查看用户是否申请过该会议，若申请过返回 true; 反之 false
     public boolean isReuestedMeeting(int mid,int uid){
         Kv cond = Kv.by("u_id = ",uid).set("m_id = ",mid);
-        SqlPara sqlPara = Db.getSqlPara("request.find",Kv.by("cond",cond));
+        SqlPara sqlPara = Db.getSqlPara("request.findList",Kv.by("cond",cond));
         List<Request> requestList = Request.dao.find(sqlPara);
         if (requestList.size() > 0){
             return true;
