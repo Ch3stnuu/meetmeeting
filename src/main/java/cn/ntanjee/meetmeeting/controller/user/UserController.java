@@ -66,7 +66,7 @@ public class UserController extends Controller {
     }
 
     //未完成 无短信发送业务
-    public void pwdG(){
+    private void pwdG(){
         String phone = getPara("phone");
 
         boolean b = true;
@@ -80,7 +80,7 @@ public class UserController extends Controller {
         renderJson(jsonObject);
     }
 
-    public void pwdP(){
+    private void pwdP(){
         String phone = getPara("phone");
         String authcode = getPara("authcode");
 
@@ -131,7 +131,7 @@ public class UserController extends Controller {
         String token = getPara("token");
         String username = getPara("username");
 
-        int uid = 1;
+        int uid = 2;
         User user = UserService.getInstance().getByUid(uid);
         String newFilePath = PathKit.getWebRootPath() + File.separator + "image" + File.separator + user.get("account") + ".jpg";
         file.getFile().renameTo(new File(newFilePath));

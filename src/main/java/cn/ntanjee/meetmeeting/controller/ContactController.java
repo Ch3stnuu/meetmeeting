@@ -24,7 +24,7 @@ public class ContactController extends Controller{
         for (Contact contact:
              list) {
             contactList.add(new cn.ntanjee.meetmeeting.vo.Contact(contact.get("cid"),
-                    UserService.getInstance().getByUid(uid).get("username")));
+                    UserService.getInstance().getByUid(contact.get("cid")).get("username")));
         }
 
         jsonObject.put("contactList", contactList);
@@ -62,7 +62,7 @@ public class ContactController extends Controller{
         int cid = getParaToInt("cid");
         int admit = getParaToInt("admit");
 
-        int uid = 1;
+        int uid = 4;
         ContactService.getInstance().updateContact(cid, uid);
         ContactService.getInstance().createContact(uid, cid, 1);
 
@@ -71,6 +71,7 @@ public class ContactController extends Controller{
         renderJson(jsonObject);
     }
 
+    //bug 两人不是好友则空指针
     public void info(){
         String token = getPara("token");
         int cid = getParaToInt("cid");

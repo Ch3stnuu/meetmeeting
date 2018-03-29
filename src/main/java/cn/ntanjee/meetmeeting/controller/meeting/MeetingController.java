@@ -27,7 +27,6 @@ public class MeetingController extends Controller {
         renderJson(jsonObject);
     }
 
-    //bug 空指针
     public void info(){
         String token = getPara("token");
         int mid = getParaToInt("mid");
@@ -111,16 +110,14 @@ public class MeetingController extends Controller {
         renderJson(jsonObject);
     }
 
-    //未完成，未获取分享连接
     public void share(){
         String token = getPara("token");
         int mid = getParaToInt("mid");
 
-        String url = "https://www.baidu.com/";
-        String authorization = "T000";
+        String url = getRequest().getHeader("Host") + "/meeting/info?mid=" + mid + "&token=" + token;
 
         jsonObject.put("url", url);
-        jsonObject.put("authorization", authorization);
+        jsonObject.put("authorization", "T000");
 
         renderJson(jsonObject);
 

@@ -10,7 +10,6 @@ import java.util.List;
 public class MeetingRequestController extends Controller{
     private JSONObject jsonObject = new JSONObject();
 
-    //未完成 Bug IllegalArgumentException
     public void index(){
         int rid = getParaToInt("rid");
         int auth = getParaToInt("auth");
@@ -61,7 +60,6 @@ public class MeetingRequestController extends Controller{
         renderJson(request);
     }
 
-    //待定，获取值与接口不同
     public void mylist(){
         String token = getPara("token");
         int status = getParaToInt("status");

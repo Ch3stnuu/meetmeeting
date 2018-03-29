@@ -44,7 +44,7 @@ public class VoteController extends Controller {
             isOver = 1;
         }
 
-        VoteInfo voteInfo = new VoteInfo(user.get("username"), item, isOver, "T000");
+        VoteInfo voteInfo = new VoteInfo(vote.get("v_name"), item, isOver, "T000");
 
         renderJson(voteInfo);
 
@@ -76,7 +76,7 @@ public class VoteController extends Controller {
         int vid = getParaToInt("vid");
         String item = getPara("item");
 
-        Boolean b = VoteService.getInstance().createVotingReslt(vid, item, 1);
+        Boolean b = VoteService.getInstance().createVotingReslt(vid, item, 2);
 
         if (b) {
             jsonObject.put("isPass", 1);

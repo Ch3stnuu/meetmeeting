@@ -16,7 +16,7 @@ public class SinginController extends Controller{
         String token = getPara("token");
         int gid = getParaToInt("gid");
 
-        Boolean b = SigninService.getInstance().sign(gid, 1);
+        Boolean b = SigninService.getInstance().sign(gid, 3);
 
         if (b){
             jsonObject.put("isSuccess", 1);
