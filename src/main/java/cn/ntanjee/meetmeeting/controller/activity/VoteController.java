@@ -31,8 +31,9 @@ public class VoteController extends Controller {
         String token = getPara("token");
         int vid = getParaToInt("vid");
 
+        int uid = TokenAnalysis.analysis(token);
         Vote vote = VoteService.getInstance().getByVid(vid);
-        User user = UserService.getInstance().getByUid(1);
+        User user = UserService.getInstance().getByUid(uid);
 
         String vitem = vote.get("item");
         String[] item = vitem.split(" ");

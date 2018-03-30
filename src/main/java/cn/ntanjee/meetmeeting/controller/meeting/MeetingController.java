@@ -77,9 +77,8 @@ public class MeetingController extends Controller {
             labelArray[i] = arrayLists.get(i);
         }
 
-        int mid = -1;
         int uid = TokenAnalysis.analysis(token);
-         mid = MeetingService.getInstance().createMeeting(uid, title, content, localDate,
+        int mid = MeetingService.getInstance().createMeeting(uid, title, content, localDate,
                 site, labelArray, res, isPublic);
 
         if(mid >= 0){

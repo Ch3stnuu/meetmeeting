@@ -50,10 +50,10 @@ public class GroupController extends Controller {
 
         User admin = UserService.getInstance().getByUid(group.get("admin"));
 
-        int[] confereeUids = GroupService.getInstance().getConfereeUid(gid);
+        int[] confereeUid = GroupService.getInstance().getConfereeUid(gid);
         List<User> list = new LinkedList<>();
         for (int i:
-             confereeUids) {
+             confereeUid) {
             list.add(UserService.getInstance().getByUid(i));
         }
 
