@@ -1,6 +1,6 @@
 package cn.ntanjee.meetmeeting.common;
 
-import cn.ntanjee.meetmeeting.TokenInterceptor;
+import cn.ntanjee.meetmeeting.Interceptor.TokenInterceptor;
 import cn.ntanjee.meetmeeting.controller.ContactController;
 import cn.ntanjee.meetmeeting.controller.GroupController;
 import cn.ntanjee.meetmeeting.controller.MessageController;

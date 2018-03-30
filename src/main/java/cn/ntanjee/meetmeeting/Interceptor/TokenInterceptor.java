@@ -1,4 +1,4 @@
-package cn.ntanjee.meetmeeting;
+package cn.ntanjee.meetmeeting.Interceptor;
 
 
 import com.github.youyinnn.youwebutils.second.JwtHelper;
