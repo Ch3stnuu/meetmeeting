@@ -42,9 +42,9 @@ public class UserService {
         Kv cond = Kv.by("account = ",account);
         SqlPara sqlPara = Db.getSqlPara("user.find",Kv.by("cond",cond));
         if (User.dao.findFirst(sqlPara) == null){
-            return true;
-        }else {
             return false;
+        }else {
+            return true;
         }
     }
 
