@@ -96,4 +96,16 @@ public class UserService {
         List<User> userList = User.dao.find(sqlPara);
         return userList;
     }
+
+    //建议调用之前先判断账号是否合法，根据账号修改密码
+    public boolean updatePwdByAccount(String account,String password){
+        Kv cond = Kv.by("account = ",account);
+        SqlPara sqlPara = Db.getSqlPara("user.findToUpdate",Kv.by("cond",cond));
+        User user = User.dao.findFirst(sqlPara);
+        if (user == null){
+            return false;
+        }else {
+           return user.set("password",password).update();
+        }
+    }
 }

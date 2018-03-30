@@ -58,10 +58,17 @@ public class ContactService {
 
     //判断两人是否是好友
     public boolean isFriend(int uid,int cid){
-        if(getContact(uid,cid).getInt("status") == 1 && getContact(cid,uid).getInt("status") == 1){
+        Contact contact1 = getContact(uid,cid);
+        Contact contact2 = getContact(cid,uid);
+        if (contact1 == null || contact2 == null){
+            return false;
+        }
+        if(contact1.getInt("status") == 1 && contact2.getInt("status") == 1){
             return true;
         }
-        return false;
+
+        return true;
+
     }
 
 
