@@ -6,6 +6,7 @@ import cn.ntanjee.meetmeeting.service.UserService;
 import com.alibaba.fastjson.JSONObject;
 import com.github.youyinnn.youwebutils.second.JwtHelper;
 import com.jfinal.aop.Clear;
+import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.PathKit;
 import com.jfinal.upload.UploadFile;
@@ -94,18 +95,23 @@ public class UserController extends Controller {
         renderJson(jsonObject);
     }
 
-    //bug 缺少接口
     public void npwd() {
         String account = getPara("account");
         String password = getPara("password");
 
-//        int uid = TokenAnalysis.analysis(token);
+        Boolean isRight = UserService.getInstance().isAccExist(account);
 
-//        Boolean b = UserService.getInstance().updatePwd(uid, password);
-//        if (b) {
-//            jsonObject.put("authorization", "T001");
-//            jsonObject.put("code", "U000");
-//        }
+        if (isRight) {
+            Boolean b = UserService.getInstance().updatePwdByAccount(account, password);
+            if (b) {
+                jsonObject.put("code", "U000");
+            } else {
+                jsonObject.put("code", "U001");
+            }
+        } else {
+            jsonObject.put("code", "L001");
+        }
+        jsonObject.put("authorization", "T001");
 
         renderJson(jsonObject);
     }
@@ -151,6 +157,18 @@ public class UserController extends Controller {
         } else {
             jsonObject.put("code", "I001");
         }
+
+        renderJson(jsonObject);
+    }
+
+    @ActionKey("/user/info/icon")
+    public void icon(){
+        int uid = getParaToInt("id");
+        String token = getPara("token");
+
+        String iconUrl = UserService.getInstance().getByUid(uid).get("icon");
+
+        jsonObject.put("icon", iconUrl);
 
         renderJson(jsonObject);
     }
