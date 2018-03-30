@@ -18,3 +18,9 @@
       #end
 #end
 
+#sql("findToUpdate")
+    SELECT u_id,username,account,icon FROM user
+      #for(x:cond)
+          #(for.index == 0 ? "where": "and") #(x.key) #para(x.value)
+      #end
+#end
