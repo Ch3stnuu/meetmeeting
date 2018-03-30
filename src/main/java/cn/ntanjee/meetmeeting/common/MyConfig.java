@@ -1,5 +1,6 @@
 package cn.ntanjee.meetmeeting.common;
 
+import cn.ntanjee.meetmeeting.TokenInterceptor;
 import cn.ntanjee.meetmeeting.controller.ContactController;
 import cn.ntanjee.meetmeeting.controller.GroupController;
 import cn.ntanjee.meetmeeting.controller.MessageController;
@@ -40,6 +41,7 @@ public class MyConfig extends JFinalConfig {
         routes.add("/group", GroupController.class);
         routes.add("/contact", ContactController.class);
         routes.add("message", MessageController.class);
+        routes.addInterceptor(new TokenInterceptor());
     }
 
     public void configEngine(Engine engine) {

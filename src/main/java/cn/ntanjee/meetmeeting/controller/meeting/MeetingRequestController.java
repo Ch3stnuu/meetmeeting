@@ -1,5 +1,6 @@
 package cn.ntanjee.meetmeeting.controller.meeting;
 
+import cn.ntanjee.meetmeeting.controller.TokenAnalysis;
 import cn.ntanjee.meetmeeting.model.Request;
 import cn.ntanjee.meetmeeting.service.MeetingService;
 import com.alibaba.fastjson.JSONObject;
@@ -30,7 +31,8 @@ public class MeetingRequestController extends Controller{
         String remark = getPara("remark");
 
         int i = -1;
-        i = MeetingService.getInstance().createRequest(2, mid, name, phone, remark);
+        int uid = TokenAnalysis.analysis(token);
+        i = MeetingService.getInstance().createRequest(uid, mid, name, phone, remark);
 
         if (i < 0){
             jsonObject.put("authorization", "T001");
@@ -44,7 +46,8 @@ public class MeetingRequestController extends Controller{
     public void list(){
         String token = getPara("token");
 
-        List<Request> requestList = MeetingService.getInstance().getRequestByUid(1);
+        int uid = TokenAnalysis.analysis(token);
+        List<Request> requestList = MeetingService.getInstance().getRequestByUid(uid);
 
         jsonObject.put("requestList", requestList);
 
@@ -64,7 +67,8 @@ public class MeetingRequestController extends Controller{
         String token = getPara("token");
         int status = getParaToInt("status");
 
-        List<Request> list = MeetingService.getInstance().getMyRequest(1, status);
+        int uid = TokenAnalysis.analysis(token);
+        List<Request> list = MeetingService.getInstance().getMyRequest(uid, status);
 
         jsonObject.put("meetingList", list);
         jsonObject.put("authorization", "T000");

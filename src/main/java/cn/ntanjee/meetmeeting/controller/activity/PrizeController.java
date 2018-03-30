@@ -12,7 +12,6 @@ import java.util.List;
 public class PrizeController extends Controller {
     private JSONObject jsonObject = new JSONObject();
 
-    //待定，缺少请求参数gid
     public void index(){
         String token = getPara("token");
         int number = getParaToInt("number");

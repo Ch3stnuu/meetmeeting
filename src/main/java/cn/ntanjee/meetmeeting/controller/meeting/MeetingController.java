@@ -1,10 +1,12 @@
 package cn.ntanjee.meetmeeting.controller.meeting;
 
+import cn.ntanjee.meetmeeting.controller.TokenAnalysis;
 import cn.ntanjee.meetmeeting.model.Meeting;
 import cn.ntanjee.meetmeeting.service.MeetingService;
 import cn.ntanjee.meetmeeting.vo.MeInfo;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.jfinal.aop.Clear;
 import com.jfinal.core.Controller;
 
 import java.time.Instant;
@@ -32,11 +34,13 @@ public class MeetingController extends Controller {
         int mid = getParaToInt("mid");
         int isPass = 0;
 
+        int uid = TokenAnalysis.analysis(token);
+
         Meeting meeting = MeetingService.getInstance().getMeetingById(mid);
-        Boolean b = MeetingService.getInstance().isReuestedMeeting(mid, 1);
+        Boolean b = MeetingService.getInstance().isReuestedMeeting(mid, uid);
 
         if (b) {
-            int status = MeetingService.getInstance().getRequestStatus(mid, 1);
+            int status = MeetingService.getInstance().getRequestStatus(mid, uid);
             if (status == 1){
                 isPass = 1;
             }
@@ -54,6 +58,7 @@ public class MeetingController extends Controller {
     }
 
     public void release() throws Exception {
+        String token = getPara("token");
         String title = getPara("title");
         String content = getPara("content");
         Date date = getParaToDate("date");
@@ -73,7 +78,8 @@ public class MeetingController extends Controller {
         }
 
         int mid = -1;
-         mid = MeetingService.getInstance().createMeeting(1, title, content, localDate,
+        int uid = TokenAnalysis.analysis(token);
+         mid = MeetingService.getInstance().createMeeting(uid, title, content, localDate,
                 site, labelArray, res, isPublic);
 
         if(mid >= 0){
@@ -90,7 +96,8 @@ public class MeetingController extends Controller {
     public void list(){
         String token = getPara("token");
 
-        List<Meeting> list = MeetingService.getInstance().getMeetingListByUid(1);
+        int uid = TokenAnalysis.analysis(token);
+        List<Meeting> list = MeetingService.getInstance().getMeetingListByUid(uid);
 
         jsonObject.put("meetingList", list);
         jsonObject.put("authorization", "T000");
@@ -122,4 +129,5 @@ public class MeetingController extends Controller {
         renderJson(jsonObject);
 
     }
+
 }

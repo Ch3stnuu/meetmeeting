@@ -1,9 +1,11 @@
 package cn.ntanjee.meetmeeting.controller.user;
 
+import cn.ntanjee.meetmeeting.controller.TokenAnalysis;
 import cn.ntanjee.meetmeeting.model.User;
 import cn.ntanjee.meetmeeting.service.UserService;
 import com.alibaba.fastjson.JSONObject;
 import com.github.youyinnn.youwebutils.second.JwtHelper;
+import com.jfinal.aop.Clear;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.PathKit;
 import com.jfinal.upload.UploadFile;
@@ -14,6 +16,7 @@ import java.io.IOException;
 public class UserController extends Controller {
     private JSONObject jsonObject = new JSONObject();
 
+    @Clear
     public void session(){
         String method = getRequest().getMethod();
 
@@ -24,6 +27,7 @@ public class UserController extends Controller {
         }
     }
 
+    @Clear
     private void signin() {
         String account = getPara("account");
         String password = getPara("password");
@@ -90,17 +94,18 @@ public class UserController extends Controller {
         renderJson(jsonObject);
     }
 
+    //bug 缺少接口
     public void npwd() {
         String account = getPara("account");
         String password = getPara("password");
 
-        int uid = 1;
+//        int uid = TokenAnalysis.analysis(token);
 
-        Boolean b = UserService.getInstance().updatePwd(uid, password);
-        if (b) {
-            jsonObject.put("authorization", "T001");
-            jsonObject.put("code", "U000");
-        }
+//        Boolean b = UserService.getInstance().updatePwd(uid, password);
+//        if (b) {
+//            jsonObject.put("authorization", "T001");
+//            jsonObject.put("code", "U000");
+//        }
 
         renderJson(jsonObject);
     }
@@ -110,7 +115,7 @@ public class UserController extends Controller {
         String opassword = getPara("opassword");
         String npassword = getPara("npassword");
 
-        int uid = 1;
+        int uid = TokenAnalysis.analysis(token);
         Boolean isRight = UserService.getInstance().isPwdRight(uid, opassword);
         if (isRight) {
             Boolean b = UserService.getInstance().updatePwd(uid, npassword);
@@ -131,7 +136,7 @@ public class UserController extends Controller {
         String token = getPara("token");
         String username = getPara("username");
 
-        int uid = 2;
+        int uid = TokenAnalysis.analysis(token);
         User user = UserService.getInstance().getByUid(uid);
         String newFilePath = PathKit.getWebRootPath() + File.separator + "image" + File.separator + user.get("account") + ".jpg";
         file.getFile().renameTo(new File(newFilePath));

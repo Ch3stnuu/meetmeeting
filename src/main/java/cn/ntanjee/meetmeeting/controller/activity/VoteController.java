@@ -1,5 +1,6 @@
 package cn.ntanjee.meetmeeting.controller.activity;
 
+import cn.ntanjee.meetmeeting.controller.TokenAnalysis;
 import cn.ntanjee.meetmeeting.model.User;
 import cn.ntanjee.meetmeeting.model.Vote;
 import cn.ntanjee.meetmeeting.service.UserService;
@@ -76,7 +77,8 @@ public class VoteController extends Controller {
         int vid = getParaToInt("vid");
         String item = getPara("item");
 
-        Boolean b = VoteService.getInstance().createVotingReslt(vid, item, 2);
+        int uid = TokenAnalysis.analysis(token);
+        Boolean b = VoteService.getInstance().createVotingReslt(vid, item, uid);
 
         if (b) {
             jsonObject.put("isPass", 1);

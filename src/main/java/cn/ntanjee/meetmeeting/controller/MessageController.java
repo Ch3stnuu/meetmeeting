@@ -12,11 +12,10 @@ import java.util.List;
 public class MessageController extends Controller {
     private JSONObject jsonObject = new JSONObject();
 
-    //bug
     public void list(){
         String token = getPara("token");
 
-        int uid = 2;
+        int uid = TokenAnalysis.analysis(token);
         List<Message> list = MessageService.getInstance().getListByUid(uid);
 
         jsonObject.put("msgList", list);

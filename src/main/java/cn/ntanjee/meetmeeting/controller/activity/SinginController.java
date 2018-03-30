@@ -1,5 +1,6 @@
 package cn.ntanjee.meetmeeting.controller.activity;
 
+import cn.ntanjee.meetmeeting.controller.TokenAnalysis;
 import cn.ntanjee.meetmeeting.model.User;
 import cn.ntanjee.meetmeeting.service.SigninService;
 import cn.ntanjee.meetmeeting.vo.TestObject;
@@ -16,7 +17,8 @@ public class SinginController extends Controller{
         String token = getPara("token");
         int gid = getParaToInt("gid");
 
-        Boolean b = SigninService.getInstance().sign(gid, 3);
+        int uid = TokenAnalysis.analysis(token);
+        Boolean b = SigninService.getInstance().sign(gid, uid);
 
         if (b){
             jsonObject.put("isSuccess", 1);

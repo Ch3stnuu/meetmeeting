@@ -17,7 +17,7 @@ public class ContactController extends Controller{
     public void index(){
         String token = getPara("token");
 
-        int uid = 1;
+        int uid = TokenAnalysis.analysis(token);
         List<Contact> list = ContactService.getInstance().getContactList(uid);
         List<cn.ntanjee.meetmeeting.vo.Contact> contactList = new LinkedList<>();
 
@@ -49,7 +49,7 @@ public class ContactController extends Controller{
         String token = getPara("token");
         int cid = getParaToInt("cid");
 
-        int uid = 5;
+        int uid = TokenAnalysis.analysis(token);
         ContactService.getInstance().createContact(uid, cid, 0);
 
         jsonObject.put("authorization", "T000");
@@ -62,7 +62,7 @@ public class ContactController extends Controller{
         int cid = getParaToInt("cid");
         int admit = getParaToInt("admit");
 
-        int uid = 4;
+        int uid = TokenAnalysis.analysis(token);
         ContactService.getInstance().updateContact(cid, uid);
         ContactService.getInstance().createContact(uid, cid, 1);
 
@@ -76,7 +76,7 @@ public class ContactController extends Controller{
         String token = getPara("token");
         int cid = getParaToInt("cid");
 
-        int uid = 1;
+        int uid = TokenAnalysis.analysis(token);
         User user = UserService.getInstance().getByUid(cid);
         Boolean b = ContactService.getInstance().isFriend(uid, cid);
         int isFriend;

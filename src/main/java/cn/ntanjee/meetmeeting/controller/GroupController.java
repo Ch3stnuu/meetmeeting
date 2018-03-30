@@ -19,7 +19,7 @@ public class GroupController extends Controller {
     public void list(){
         String token = getPara("token");
 
-        int uid = 1;
+        int uid = TokenAnalysis.analysis(token);
 
         List<Group> list = GroupService.getInstance().getListByConferee(uid);
         List<GouList> glist = new LinkedList<>();
@@ -39,7 +39,7 @@ public class GroupController extends Controller {
         String token = getPara("token");
         int gid = getParaToInt("gid");
 
-        int uid = 1;
+        int uid = TokenAnalysis.analysis(token);
 
         Group group = GroupService.getInstance().getGroupById(gid);
 
