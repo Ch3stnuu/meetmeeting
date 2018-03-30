@@ -71,7 +71,6 @@ public class ContactController extends Controller{
         renderJson(jsonObject);
     }
 
-    //bug 两人不是好友则空指针
     public void info(){
         String token = getPara("token");
         int cid = getParaToInt("cid");
