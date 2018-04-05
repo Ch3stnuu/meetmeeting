@@ -17,7 +17,7 @@ public class UserSignupController extends Controller {
 
         boolean b = UserService.getInstance().isAccExist(account);
 
-        if (b) {
+        if (!b) {
             UserService.getInstance().createUser(account, username, password, null);
             jsonObject.put("code", "S000");
         } else {
