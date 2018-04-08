@@ -1,6 +1,7 @@
 package cn.ntanjee.meetmeeting.common;
 
 import cn.ntanjee.meetmeeting.Interceptor.TokenInterceptor;
+import cn.ntanjee.meetmeeting.controller.BarrageController;
 import cn.ntanjee.meetmeeting.controller.ContactController;
 import cn.ntanjee.meetmeeting.controller.GroupController;
 import cn.ntanjee.meetmeeting.controller.MessageController;
@@ -12,6 +13,8 @@ import cn.ntanjee.meetmeeting.controller.meeting.MeetingRequestController;
 import cn.ntanjee.meetmeeting.controller.user.UserController;
 import cn.ntanjee.meetmeeting.controller.user.UserSignupController;
 import cn.ntanjee.meetmeeting.model.*;
+import com.github.youyinnn.server.Server;
+import com.github.youyinnn.server.ServerConfig;
 import com.jfinal.config.*;
 import com.jfinal.kit.PathKit;
 import com.jfinal.kit.PropKit;
@@ -42,6 +45,7 @@ public class MyConfig extends JFinalConfig {
         routes.add("/user/signup", UserSignupController.class);
         routes.add("/group", GroupController.class);
         routes.add("/contact", ContactController.class);
+        routes.add("/barrage", BarrageController.class, "");
         routes.add("message", MessageController.class);
         routes.addInterceptor(new TokenInterceptor());
     }
@@ -54,7 +58,7 @@ public class MyConfig extends JFinalConfig {
     @Override
     public void configPlugin(Plugins plugins) {
         //druid 数据源插件
-        DruidPlugin dp = new DruidPlugin(PropKit.get("jdbcUrl"),PropKit.get("user"),PropKit.get("password"));
+        DruidPlugin dp = new DruidPlugin(PropKit.get("url"),PropKit.get("username"),PropKit.get("password"));
         dp.setDriverClass(PropKit.get("driverClass"));
         dp.set(PropKit.getInt("initialSize"),PropKit.getInt("minIdle"),PropKit.getInt("maxActive"));
         dp.setMaxWait(PropKit.getInt("maxWait"));
@@ -74,6 +78,13 @@ public class MyConfig extends JFinalConfig {
         arp.addMapping("voting_result",VotingResult.class);
         arp.addMapping("signin","g_id",Signin.class);
 
+        ServerConfig serverConfig = ServerConfig.getWsServerConfig();
+        serverConfig.disableUserManagementModule();
+        serverConfig.setBindPort(5999);
+        serverConfig.setSqlPropertiesFile("config.properties");
+        Server.enableAllLogEnabled();
+        Server.init(serverConfig);
+        Server.start();
     }
 
     @Override
@@ -88,6 +99,6 @@ public class MyConfig extends JFinalConfig {
 
     @Override
     public void afterJFinalStart() {
-
+        System.out.println("----");
     }
 }
