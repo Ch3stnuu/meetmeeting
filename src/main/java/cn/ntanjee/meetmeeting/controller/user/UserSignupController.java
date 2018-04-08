@@ -2,6 +2,7 @@ package cn.ntanjee.meetmeeting.controller.user;
 
 import cn.ntanjee.meetmeeting.service.UserService;
 import com.alibaba.fastjson.JSONObject;
+import com.jfinal.aop.Clear;
 import com.jfinal.core.Controller;
 
 import java.util.regex.Matcher;
@@ -64,11 +65,10 @@ public class UserSignupController extends Controller {
         String authcode = getPara("authcode");
 
         boolean b = true;
-        String account = phone;
 
         if (b) {
             jsonObject.put("code", "AC00");
-            jsonObject.put("account", account);
+            jsonObject.put("account", phone);
         } else {
             jsonObject.put("code", "AC01");
         }
