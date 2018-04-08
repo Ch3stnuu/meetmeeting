@@ -22,6 +22,7 @@ import com.jfinal.template.Engine;
 
 public class MyConfig extends JFinalConfig {
 
+    @Override
     public void configConstant(Constants constants) {
         constants.setUrlParaSeparator("&");
         PropKit.use("config.properties");
@@ -30,6 +31,7 @@ public class MyConfig extends JFinalConfig {
 
     }
 
+    @Override
     public void configRoute(Routes routes) {
         routes.add("/meeting", MeetingController.class);
         routes.add("/meeting/request", MeetingRequestController.class);
@@ -44,10 +46,12 @@ public class MyConfig extends JFinalConfig {
         routes.addInterceptor(new TokenInterceptor());
     }
 
+    @Override
     public void configEngine(Engine engine) {
 
     }
 
+    @Override
     public void configPlugin(Plugins plugins) {
         //druid 数据源插件
         DruidPlugin dp = new DruidPlugin(PropKit.get("jdbcUrl"),PropKit.get("user"),PropKit.get("password"));
@@ -72,10 +76,12 @@ public class MyConfig extends JFinalConfig {
 
     }
 
+    @Override
     public void configInterceptor(Interceptors interceptors) {
 
     }
 
+    @Override
     public void configHandler(Handlers handlers) {
         handlers.add(new DruidStatViewHandler("/druid"));
     }
