@@ -8,6 +8,9 @@ import com.jfinal.core.Controller;
 
 import java.util.List;
 
+/**
+ * @author 74123
+ */
 public class MeetingRequestController extends Controller{
     private JSONObject jsonObject = new JSONObject();
 

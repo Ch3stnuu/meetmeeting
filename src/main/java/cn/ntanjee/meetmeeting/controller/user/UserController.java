@@ -14,6 +14,9 @@ import com.jfinal.upload.UploadFile;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * @author 74123
+ */
 public class UserController extends Controller {
     private JSONObject jsonObject = new JSONObject();
 
@@ -56,41 +59,6 @@ public class UserController extends Controller {
         String token = getPara("token");
 
         jsonObject.put("authrization", "T001");
-
-        renderJson(jsonObject);
-    }
-
-    public void pwd(){
-        String method = getRequest().getMethod();
-
-        if (method.equals("POST")){
-            pwdP();
-        }else {
-            pwdG();
-        }
-    }
-
-    //未完成 无短信发送业务
-    private void pwdG(){
-        String phone = getPara("phone");
-
-        boolean b = true;
-
-        if (b) {
-            jsonObject.put("code", "S000");
-        } else {
-            jsonObject.put("code", "S001");
-        }
-
-        renderJson(jsonObject);
-    }
-
-    private void pwdP(){
-        String phone = getPara("phone");
-        String authcode = getPara("authcode");
-
-        jsonObject.put("code", "AC00");
-        jsonObject.put("account", phone);
 
         renderJson(jsonObject);
     }

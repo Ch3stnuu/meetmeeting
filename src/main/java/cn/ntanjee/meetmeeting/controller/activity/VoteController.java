@@ -14,6 +14,9 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
 
+/**
+ * @author 74123
+ */
 public class VoteController extends Controller {
     private JSONObject jsonObject = new JSONObject();
 

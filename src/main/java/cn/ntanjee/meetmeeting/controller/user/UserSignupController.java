@@ -8,6 +8,9 @@ import com.jfinal.core.Controller;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * @author 74123
+ */
 public class UserSignupController extends Controller {
     private JSONObject jsonObject = new JSONObject();
 
@@ -28,17 +31,7 @@ public class UserSignupController extends Controller {
         renderJson(jsonObject);
     }
 
-    public void authcode() {
-        String method = getRequest().getMethod();
-
-        if (method.equals("POST")){
-            authPost();
-        }else {
-            authGet();
-        }
-    }
-
-    private void authGet(){
+    public void authcode(){
         String phone = getPara("phone");
 
         String regex = "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(17[013678])|(18[0,5-9]))\\d{8}$";
@@ -54,23 +47,6 @@ public class UserSignupController extends Controller {
             } else {
                 jsonObject.put("legle", 0);
             }
-        }
-
-        renderJson(jsonObject);
-    }
-
-    //未完成 不知道咋验证
-    private void authPost() {
-        String phone = getPara("phone");
-        String authcode = getPara("authcode");
-
-        boolean b = true;
-
-        if (b) {
-            jsonObject.put("code", "AC00");
-            jsonObject.put("account", phone);
-        } else {
-            jsonObject.put("code", "AC01");
         }
 
         renderJson(jsonObject);

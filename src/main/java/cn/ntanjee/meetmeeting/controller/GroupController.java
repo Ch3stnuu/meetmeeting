@@ -14,6 +14,9 @@ import com.jfinal.core.Controller;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * @author 74123
+ */
 public class GroupController extends Controller {
 
     public void list(){

@@ -9,6 +9,9 @@ import com.jfinal.core.Controller;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * @author 74123
+ */
 public class PrizeController extends Controller {
     private JSONObject jsonObject = new JSONObject();
 

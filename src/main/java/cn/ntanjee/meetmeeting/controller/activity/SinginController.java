@@ -10,6 +10,9 @@ import com.jfinal.core.Controller;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * @author 74123
+ */
 public class SinginController extends Controller{
     private JSONObject jsonObject = new JSONObject();
 

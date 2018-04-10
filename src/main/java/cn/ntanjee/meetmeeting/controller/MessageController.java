@@ -9,6 +9,9 @@ import com.jfinal.core.Controller;
 import java.sql.Timestamp;
 import java.util.List;
 
+/**
+ * @author 74123
+ */
 public class MessageController extends Controller {
     private JSONObject jsonObject = new JSONObject();
 
