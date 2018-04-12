@@ -16,7 +16,12 @@ import java.util.Random;
  * @author 74123
  */
 public class MyHttpClient {
-    public static String doPost(String url, JSONObject params) {
+    public static void doPost(String url, JSONObject params) {
+        /*
+        测试代码
+         */
+        System.out.println(params);
+
         InputStream inputStream = null;
         BufferedReader bufferedReader = null;
         String result = null;
@@ -35,7 +40,6 @@ public class MyHttpClient {
         if (nonce < 0) {
             nonce = -nonce;
         }
-        System.out.println(nonce);
         postMethod.setRequestHeader("App-Key", appKey);
         postMethod.setRequestHeader("Nonce", nonce.toString());
 
@@ -94,6 +98,6 @@ public class MyHttpClient {
             postMethod.releaseConnection();
         }
 
-        return result;
+        System.out.println(result);
     }
 }

@@ -21,7 +21,6 @@ public class TokenInterceptor implements Interceptor{
             JwtHelper.initJWTWithHMAC256("heeeyou", "chestnut");
             Boolean isRight = JwtHelper.verify(token);
             if (isRight) {
-                System.out.println("isRight");
                 inv.invoke();
             } else {
                 inv.getController().renderJson("authorization", "T001");

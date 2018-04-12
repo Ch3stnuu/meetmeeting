@@ -4,6 +4,7 @@ import cn.ntanjee.meetmeeting.controller.TokenAnalysis;
 import cn.ntanjee.meetmeeting.httpclient.HttpSender;
 import cn.ntanjee.meetmeeting.model.Request;
 import cn.ntanjee.meetmeeting.model.User;
+import cn.ntanjee.meetmeeting.service.GroupService;
 import cn.ntanjee.meetmeeting.service.MeetingService;
 import cn.ntanjee.meetmeeting.service.UserService;
 import com.alibaba.fastjson.JSONObject;
@@ -24,12 +25,18 @@ public class MeetingRequestController extends Controller{
 
         int uid = TokenAnalysis.analysis(token);
         MeetingService.getInstance().reviewRequest(rid, auth);
+//        GroupService.getInstance().updateGroup()
 
-        String tel = MeetingService.getInstance().getRequestByRid(6).get("tel");
-        List<User> users = UserService.getInstance().getByNameOrAcc(tel);
-        int[] cid = {users.get(0).get("uid")};
+        String tel = MeetingService.getInstance().getRequestByRid(rid).get("tel");
+        List<User> users = null;
+        users = UserService.getInstance().getByNameOrAcc(tel);
+        System.out.println(users);
 
-        HttpSender.sender(uid, cid, rid, null, 4, auth);
+        if (users != null) {
+            int u = users.get(0).get("uid");
+            String[] cid = {String.valueOf(u)};
+            HttpSender.sender(uid, cid, rid, null, 4, auth);
+        }
 
         jsonObject.put("authorization", "T000");
 
@@ -51,7 +58,17 @@ public class MeetingRequestController extends Controller{
             jsonObject.put("authorization", "T001");
         } else {
             jsonObject.put("mid", mid);
-//            int cid = MeetingService.getInstance().getMeetingById(mid).get("uid");
+
+            int u = MeetingService.getInstance().getMeetingById(mid).get("uid");
+            String[] cid ={String.valueOf(u)};
+            String title = MeetingService.getInstance().getMeetingById(mid).get("title");
+
+            String content = "会议名称：" + title + "\n" +
+                    "申请人姓名：" + name + "\n" +
+                    "联系电话：" + phone + "\n" +
+                    "备注：" + remark;
+
+            HttpSender.sender(uid, cid, -1, content, 3, -1);
         }
 
         renderJson(jsonObject);

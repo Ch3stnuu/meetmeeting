@@ -13,7 +13,7 @@ import java.util.Map;
  * @author 74123
  */
 public class HttpSender {
-    public static void sender(int uid, int[] cid, int rid, Object content, int mType, int mark) {
+    public static void sender(int uid, String[] cid, int rid, Object content, int mType, int mark) {
         Map<String, Object> message = new HashMap<>();
         message.put("objectName", "RC:TxtMsg");
 
@@ -30,10 +30,10 @@ public class HttpSender {
             message.put("content", "您申请参加的 " + title + " 会议，审核" + status);
         }
 
-        jsonCompelte(uid, cid, message);
+        jsonComplete(uid, cid, message);
     }
 
-    public static void conSender(int uid, int[] cid, int mType) {
+    public static void conSender(int uid, String[] cid, int mType) {
         Map<String, Object> message = new HashMap<>();
         message.put("objectName", "RC:ContactNtf");
 
@@ -53,11 +53,11 @@ public class HttpSender {
         message.put("sourceUserId", uid);
         message.put("targetUserId", cid);
 
-        jsonCompelte(uid, cid, message);
+        jsonComplete(uid, cid, message);
 
     }
 
-    private static void jsonCompelte(int uid, int[] cid, Map<String, Object> message){
+    private static void jsonComplete(int uid, String[] cid, Map<String, Object> message){
         JSONObject audience = new JSONObject();
         audience.put("userid", cid);
         audience.put("is_to_all", false);
@@ -68,7 +68,7 @@ public class HttpSender {
         String[] platform = {"android"};
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("platform", platform);
-        jsonObject.put("fromuserid", uid);
+        jsonObject.put("fromuserid", String.valueOf(uid));
         jsonObject.put("audience", audience);
         jsonObject.put("message", message);
         jsonObject.put("notification", notification);
