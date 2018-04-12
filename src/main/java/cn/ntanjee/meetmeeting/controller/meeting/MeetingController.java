@@ -2,6 +2,7 @@ package cn.ntanjee.meetmeeting.controller.meeting;
 
 import cn.ntanjee.meetmeeting.controller.TokenAnalysis;
 import cn.ntanjee.meetmeeting.model.Meeting;
+import cn.ntanjee.meetmeeting.service.GroupService;
 import cn.ntanjee.meetmeeting.service.MeetingService;
 import cn.ntanjee.meetmeeting.vo.MeInfo;
 import com.alibaba.fastjson.JSON;
@@ -60,7 +61,7 @@ public class MeetingController extends Controller {
 
     }
 
-    public void release() throws Exception {
+    public void release() {
         String token = getPara("token");
         String title = getPara("title");
         String content = getPara("content");
@@ -83,6 +84,8 @@ public class MeetingController extends Controller {
         int uid = TokenAnalysis.analysis(token);
         int mid = MeetingService.getInstance().createMeeting(uid, title, content, localDate,
                 site, labelArray, res, isPublic);
+
+        GroupService.getInstance().createGroup(mid, uid);
 
         if(mid >= 0){
             jsonObject.put("mid", mid);

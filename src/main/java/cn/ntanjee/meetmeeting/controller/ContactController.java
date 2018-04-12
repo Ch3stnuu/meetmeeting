@@ -58,8 +58,7 @@ public class ContactController extends Controller{
         int uid = TokenAnalysis.analysis(token);
         ContactService.getInstance().createContact(uid, cid, 0);
 
-        String[] cids = {String.valueOf(cid)};
-        HttpSender.conSender(uid, cids, 1);
+        HttpSender.conSender(uid, cid, 1);
 
         jsonObject.put("authorization", "T000");
 
@@ -75,8 +74,7 @@ public class ContactController extends Controller{
         ContactService.getInstance().updateContact(cid, uid);
         ContactService.getInstance().createContact(uid, cid, 1);
 
-        String[] cids = {String.valueOf(cid)};
-        HttpSender.conSender(uid, cids, 2);
+        HttpSender.conSender(uid, cid, 2);
 
         jsonObject.put("authorization", "T000");
 

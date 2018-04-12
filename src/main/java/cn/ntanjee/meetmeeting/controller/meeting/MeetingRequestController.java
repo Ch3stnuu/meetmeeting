@@ -23,20 +23,27 @@ public class MeetingRequestController extends Controller{
         int auth = getParaToInt("auth");
         String token = getPara("token");
 
-        int uid = TokenAnalysis.analysis(token);
-        MeetingService.getInstance().reviewRequest(rid, auth);
-//        GroupService.getInstance().updateGroup()
-
-        String tel = MeetingService.getInstance().getRequestByRid(rid).get("tel");
         List<User> users = null;
+        String tel = MeetingService.getInstance().getRequestByRid(rid).get("tel");
         users = UserService.getInstance().getByNameOrAcc(tel);
+
+        //验证token
+        int uid = TokenAnalysis.analysis(token);
+
+        //修改请求状态
+        MeetingService.getInstance().reviewRequest(rid, auth);
+
+        //如果同意，向群组中添加成员
+        if (auth == 1) {
+            Request request = MeetingService.getInstance().getRequestByRid(rid);
+            //缺少   mid获取gid
+            GroupService.getInstance().updateGroup(request.get("mid"), users.get(0).get("uid"));
+        }
+
         System.out.println(users);
 
-        if (users != null) {
-            int u = users.get(0).get("uid");
-            String[] cid = {String.valueOf(u)};
-            HttpSender.sender(uid, cid, rid, null, 4, auth);
-        }
+        int cid = users.get(0).get("uid");
+        HttpSender.sender(uid, cid, rid, null, 4, auth);
 
         jsonObject.put("authorization", "T000");
 
@@ -59,8 +66,7 @@ public class MeetingRequestController extends Controller{
         } else {
             jsonObject.put("mid", mid);
 
-            int u = MeetingService.getInstance().getMeetingById(mid).get("uid");
-            String[] cid ={String.valueOf(u)};
+            int cid = MeetingService.getInstance().getMeetingById(mid).get("uid");
             String title = MeetingService.getInstance().getMeetingById(mid).get("title");
 
             String content = "会议名称：" + title + "\n" +

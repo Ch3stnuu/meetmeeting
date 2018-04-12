@@ -13,7 +13,7 @@ import java.util.Map;
  * @author 74123
  */
 public class HttpSender {
-    public static void sender(int uid, String[] cid, int rid, Object content, int mType, int mark) {
+    public static void sender(int uid, int cid, int rid, Object content, int mType, int mark) {
         Map<String, Object> message = new HashMap<>();
         message.put("objectName", "RC:TxtMsg");
 
@@ -33,9 +33,9 @@ public class HttpSender {
         jsonComplete(uid, cid, message);
     }
 
-    public static void conSender(int uid, String[] cid, int mType) {
+    public static void conSender(int uid, int cid, int mType) {
         Map<String, Object> message = new HashMap<>();
-        message.put("objectName", "RC:ContactNtf");
+        message.put("objectName", "RC:TxtMsg");
 
         User user = UserService.getInstance().getByUid(uid);
         String uName = user.get("username");
@@ -43,23 +43,19 @@ public class HttpSender {
         //消息类型为
         // 1：好友申请   2：好友添加结果
         if (mType == 1) {
-            message.put("operation", "op1");
-            message.put("message", "用户 " + uName + " 请求添加您为好友");
+            message.put("content", "用户 " + uName + " 请求添加您为好友");
         } else if (mType == 2) {
-            message.put("operation", "op2");
-            message.put("message", "您已成功添加 " + uName + " 为好友");
+            message.put("content", "您已成功添加 " + uName + " 为好友");
         }
-
-        message.put("sourceUserId", uid);
-        message.put("targetUserId", cid);
 
         jsonComplete(uid, cid, message);
 
     }
 
-    private static void jsonComplete(int uid, String[] cid, Map<String, Object> message){
+    private static void jsonComplete(int uid, int cid, Map<String, Object> message){
         JSONObject audience = new JSONObject();
-        audience.put("userid", cid);
+        String[] cids = {String.valueOf(cid)};
+        audience.put("userid", cids);
         audience.put("is_to_all", false);
 
         JSONObject notification = new JSONObject();
