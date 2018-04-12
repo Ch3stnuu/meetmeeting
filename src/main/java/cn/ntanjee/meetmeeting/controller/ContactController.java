@@ -1,8 +1,11 @@
 package cn.ntanjee.meetmeeting.controller;
 
+import cn.ntanjee.meetmeeting.httpclient.HttpSender;
 import cn.ntanjee.meetmeeting.model.Contact;
+import cn.ntanjee.meetmeeting.model.Request;
 import cn.ntanjee.meetmeeting.model.User;
 import cn.ntanjee.meetmeeting.service.ContactService;
+import cn.ntanjee.meetmeeting.service.MeetingService;
 import cn.ntanjee.meetmeeting.service.UserService;
 import cn.ntanjee.meetmeeting.vo.ConInfo;
 import com.alibaba.fastjson.JSONObject;
@@ -55,6 +58,9 @@ public class ContactController extends Controller{
         int uid = TokenAnalysis.analysis(token);
         ContactService.getInstance().createContact(uid, cid, 0);
 
+        int[] cids = {cid};
+        HttpSender.conSender(uid, cids, 1);
+
         jsonObject.put("authorization", "T000");
 
         renderJson(jsonObject);
@@ -68,6 +74,9 @@ public class ContactController extends Controller{
         int uid = TokenAnalysis.analysis(token);
         ContactService.getInstance().updateContact(cid, uid);
         ContactService.getInstance().createContact(uid, cid, 1);
+
+        int[] cids = {cid};
+        HttpSender.conSender(uid, cids, 2);
 
         jsonObject.put("authorization", "T000");
 
