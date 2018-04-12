@@ -6,7 +6,7 @@
 #end
 
 #sql("findByRid")
-      SELECT r_id rid,name,tel,remark FROM request
+      SELECT m_id mid,r_id rid,name,tel,remark FROM request
         #for(x:cond)
            #(for.index == 0 ? "where": "and") #(x.key) #para(x.value)
         #end
