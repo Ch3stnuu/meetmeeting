@@ -2,14 +2,17 @@ package cn.ntanjee.meetmeeting.controller.meeting;
 
 import cn.ntanjee.meetmeeting.controller.TokenAnalysis;
 import cn.ntanjee.meetmeeting.httpclient.HttpSender;
+import cn.ntanjee.meetmeeting.model.Meeting;
 import cn.ntanjee.meetmeeting.model.Request;
 import cn.ntanjee.meetmeeting.model.User;
 import cn.ntanjee.meetmeeting.service.GroupService;
 import cn.ntanjee.meetmeeting.service.MeetingService;
 import cn.ntanjee.meetmeeting.service.UserService;
+import cn.ntanjee.meetmeeting.vo.MyList;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.core.Controller;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -107,7 +110,15 @@ public class MeetingRequestController extends Controller{
         int uid = TokenAnalysis.analysis(token);
         List<Request> list = MeetingService.getInstance().getMyRequest(uid, status);
 
-        jsonObject.put("meetingList", list);
+        List<MyList> myLists = new LinkedList<>();
+        for (Request re:
+             list) {
+            Meeting meeting = MeetingService.getInstance().getMeetingById(re.get("mid"));
+            MyList myList = new MyList(re.get("mid"), meeting.get("title"), re.get("status"));
+            myLists.add(myList);
+        }
+
+        jsonObject.put("meetingList", myLists);
         jsonObject.put("authorization", "T000");
 
         renderJson(jsonObject);

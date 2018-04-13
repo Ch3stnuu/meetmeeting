@@ -89,10 +89,10 @@ public class MeetingController extends Controller {
 
         if(mid >= 0){
             jsonObject.put("mid", mid);
-            jsonObject.put("code", "R001");
+            jsonObject.put("code", "R000");
             jsonObject.put("authorization", "T000");
         }else {
-            jsonObject.put("code","R000");
+            jsonObject.put("code","R001");
         }
 
         renderJson(jsonObject);
@@ -133,6 +133,25 @@ public class MeetingController extends Controller {
 
         renderJson(jsonObject);
 
+    }
+
+    public void delete() {
+        String token = getPara("token");
+        int mid = getParaToInt("mid");
+
+        int uid = MeetingService.getInstance().getMeetingById(mid).get("uid");
+        int uidT = TokenAnalysis.analysis(token);
+
+        if (uid == uidT) {
+            MeetingService.getInstance().deleteMeeting(mid);
+            jsonObject.put("code", "R000");
+        } else {
+            jsonObject.put("code", "R001");
+        }
+
+        jsonObject.put("authorization", "T000");
+
+        renderJson(jsonObject);
     }
 
 }

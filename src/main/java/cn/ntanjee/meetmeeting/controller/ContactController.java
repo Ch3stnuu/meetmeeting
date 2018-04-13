@@ -100,4 +100,14 @@ public class ContactController extends Controller{
 
         renderJson(conInfo);
     }
+
+    public void delete() {
+        String token = getPara("token");
+        int cid = getParaToInt("cid");
+
+        int uid = TokenAnalysis.analysis(token);
+        ContactService.getInstance().deleteContact(uid, cid);
+
+        jsonObject.put("authorization", "T000");
+    }
 }

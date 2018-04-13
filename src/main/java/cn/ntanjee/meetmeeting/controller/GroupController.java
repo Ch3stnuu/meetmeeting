@@ -64,4 +64,25 @@ public class GroupController extends Controller {
 
         renderJson(groupInfo);
     }
+
+    public void drop() {
+        String token = getPara("token");
+        int gid = getParaToInt("gid");
+
+        int uid = TokenAnalysis.analysis(token);
+
+        Boolean b = GroupService.getInstance().dropGroup(gid, uid);
+
+        JSONObject jsonObject = new JSONObject();
+
+        if (b) {
+            jsonObject.put("code", "R000");
+        } else {
+            jsonObject.put("code", "R001");
+        }
+
+        jsonObject.put("authorization", "T000");
+
+        renderJson(jsonObject);
+    }
 }
