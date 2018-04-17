@@ -105,4 +105,12 @@ public class GroupService {
         return isUpdate;
     }
 
+    //根据 mid 获取 gid
+    public int getGidByMid(int mid){
+        Kv cond = Kv.by("m_id = ",mid);
+        SqlPara sqlPara = Db.getSqlPara("group.findGid",Kv.by("cond",cond));
+        int gid = Group.dao.findFirst(sqlPara).getInt("gid");
+        return gid;
+    }
+
  }

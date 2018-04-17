@@ -4,3 +4,10 @@
            #(for.index == 0 ? "where": "and") #(x.key) #para(x.value)
         #end
 #end
+
+#sql("findGid")
+      SELECT g_id gid FROM meetmeeting.group
+        #for(x:cond)
+           #(for.index == 0 ? "where": "and") #(x.key) #para(x.value)
+        #end
+#end
