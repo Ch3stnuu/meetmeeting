@@ -48,7 +48,7 @@ public class UserController extends Controller {
             jsonObject.put("code", "L000");
             jsonObject.put("token", token);
         } else {
-            jsonObject.put("code", "L0001");
+            jsonObject.put("code", "L001");
             jsonObject.put("authorization", "T001");
         }
 

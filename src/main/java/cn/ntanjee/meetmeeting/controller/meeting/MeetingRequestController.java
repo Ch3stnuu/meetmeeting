@@ -33,19 +33,24 @@ public class MeetingRequestController extends Controller{
         //验证token
         int uid = TokenAnalysis.analysis(token);
 
-        //修改请求状态
-        MeetingService.getInstance().reviewRequest(rid, auth);
-
         //如果同意，向群组中添加成员
         if (auth == 1) {
+            int gid;
             Request request = MeetingService.getInstance().getRequestByRid(rid);
-            //缺少   mid获取gid
-            GroupService.getInstance().updateGroup(request.get("mid"), users.get(0).get("uid"));
+            gid = GroupService.getInstance().getGidByMid(request.get("mid"));
+            if (gid > 0) {
+                //修改请求状态
+                MeetingService.getInstance().reviewRequest(rid, auth);
+                //向Group表中添加成员
+                GroupService.getInstance().updateGroup(gid, users.get(0).get("uid"));
+                jsonObject.put("code", "R000");
+            } else {
+                jsonObject.put("code", "R001");
+            }
         }
 
-        System.out.println(users);
-
         int cid = users.get(0).get("uid");
+        //发送http请求给融云
         HttpSender.sender(uid, cid, rid, null, 4, auth);
 
         jsonObject.put("authorization", "T000");
