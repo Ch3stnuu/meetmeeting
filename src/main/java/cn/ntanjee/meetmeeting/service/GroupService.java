@@ -36,10 +36,12 @@ public class GroupService {
         for (Group group:allGroup){
             String confereeStr = group.getStr("conferee");
             //使用正则表达式
-            Pattern pattern = Pattern.compile("\\b"+conferee+"\\b");
-            Matcher matcher = pattern.matcher(confereeStr);
-            if (matcher.find()){
-                groupList.add(group);
+            if (confereeStr != null) {
+                Pattern pattern = Pattern.compile("\\b"+conferee+"\\b");
+                Matcher matcher = pattern.matcher(confereeStr);
+                if (matcher.find()){
+                    groupList.add(group);
+                }
             }
         }
         return groupList;
